@@ -1,0 +1,76 @@
+<definitions
+  name="LolDictionary"
+  targetNamespace="http://localhost:8000/lol-dictionary?wsdl"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://localhost:8000/lol-dictionary?wsdl"
+>
+  <types>
+    <schema
+      targetNamespace="http://localhost:8000/lol-dictionary?wsdl"
+      xmlns="http://www.w3.org/2001/XMLSchema"
+    >
+      <element name="getChampionInfo">
+        <complexType>
+          <sequence>
+            <element name="name" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+
+      <element name="ChampionInfo">
+        <complexType>
+          <sequence>
+            <element name="lane" type="string" />
+            <element name="region" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+
+      <element name="getChampionInfoResponse">
+        <complexType>
+          <sequence>
+            <element ref="tns:ChampionInfo" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+
+  <message name="getChampionInfoRequest">
+    <part name="parameters" element="tns:getChampionInfo" />
+  </message>
+
+  <message name="getChampionInfoResponse">
+    <part name="parameters" element="tns:getChampionInfoResponse" />
+  </message>
+
+  <portType name="LolPortType">
+    <operation name="getChampionInfo">
+      <input message="tns:getChampionInfoRequest" />
+      <output message="tns:getChampionInfoResponse" />
+    </operation>
+  </portType>
+
+  <binding name="LolBinding" type="tns:LolPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <operation name="getChampionInfo">
+      <soap:operation soapAction="getChampionInfo" />
+
+      <input>
+        <soap:body use="encoded" namespace="http://localhost:8000/lol-dictionary?wsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+
+      <output>
+        <soap:body use="encoded" namespace="http://localhost:8000/lol-dictionary?wsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+
+  <service name="LolService">
+    <port name="LolPort" binding="tns:LolBinding">
+      <soap:address location="http://localhost:8000/lol-dictionary" />
+    </port>
+  </service>
+</definitions>
